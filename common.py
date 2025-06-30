@@ -2,17 +2,54 @@ import os as _os
 import json as _json
 import ctypes as _ctypes
 
-class Terminal:
-	def __init__(self):
-		pass
+COLOR_CODES = {
+    "BLACK": "0", "BLUE": "1", "GREEN": "2", "AQUA": "3",
+    "RED": "4", "PURPLE": "5", "YELLOW": "6", "WHITE": "7",
+    "GRAY": "8", "LIGHT_BLUE": "9", "LIGHT_GREEN": "A",
+    "LIGHT_AQUA": "B", "LIGHT_RED": "C", "LIGHT_PURPLE": "D",
+    "LIGHT_YELLOW": "E", "BRIGHT_WHITE": "F"
+}
 
-	def set_windows_terminal_size(cols, rows):
+ANSI_COLORS = {
+    "BLACK": 30, "RED": 31, "GREEN": 32, "YELLOW": 33,
+    "BLUE": 34, "PURPLE": 35, "AQUA": 36, "WHITE": 37,
+    "BRIGHT_BLACK": 90, "BRIGHT_RED": 91, "BRIGHT_GREEN": 92,
+    "BRIGHT_YELLOW": 93, "BRIGHT_BLUE": 94, "BRIGHT_PURPLE": 95,
+    "BRIGHT_AQUA": 96, "BRIGHT_WHITE": 97
+}
+
+class Terminal:
+	def __init__(self, cols=120, rows=30):
+		self.columns = cols
+		self.rows = rows
+		self.set_size(self.columns, self.rows)
+		self.set_title()
+
+	def set_size(self, cols, rows):
 		_os.system(
 			f'powershell -Command "$size = New-Object System.Management.Automation.Host.Size {cols},{rows}; '
 			f'$Host.UI.RawUI.BufferSize = $size; '
 			f'$Host.UI.RawUI.WindowSize = $size"'
 		)
 
+	def set_title(self, title):
+		_os.system(f"title {title}")
+
+	def set_theme(fg: str = "WHITE", bg: str = "BLACK"):
+		system = _os.name
+		fg = fg.upper()
+		bg = bg.upper()
+
+		if system == "nt":
+			fg_code = COLOR_CODES.get(fg, "7")
+			bg_code = COLOR_CODES.get(bg, "0")
+			_os.system(f"color {bg_code}{fg_code}")
+		else:
+			fg_ansi = ANSI_COLORS.get(fg, 37)
+			bg_ansi = ANSI_COLORS.get(bg, 40) - 30 + 40
+			print(f"\033[{fg_ansi};{bg_ansi}m", end="")
+
+		
 
 _save_path = "save._json"
 
