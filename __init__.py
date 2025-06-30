@@ -1,2 +1,3 @@
 from common import *
-import keyboard
+import keyhandler
+import keycodes

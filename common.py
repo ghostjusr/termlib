@@ -1,24 +1,37 @@
 import os as _os
 import json as _json
+import ctypes as _ctypes
+
+class Terminal:
+	def __init__(self):
+		pass
+
+	def set_windows_terminal_size(cols, rows):
+		_os.system(
+			f'powershell -Command "$size = New-Object System.Management.Automation.Host.Size {cols},{rows}; '
+			f'$Host.UI.RawUI.BufferSize = $size; '
+			f'$Host.UI.RawUI.WindowSize = $size"'
+		)
+
 
 _save_path = "save._json"
 
 def set_path(path: str):
-    global _save_path
-    _save_path = path
+	global _save_path
+	_save_path = path
 
 def save(data, path=_save_path):
-    with open(path, "w", encoding="utf-8-sig") as f:
-        _json.dump(data, f)
+	with open(path, "w", encoding="utf-8-sig") as f:
+		_json.dump(data, f)
 
 def load(on_missing=None, path=_save_path):
-    if not _os.path.exists(path):
-        if on_missing:
-            on_missing()
-            return
-        raise FileNotFoundError(f"Save file '{path}' does not exist.")
-    with open(path, "r", encoding="utf-8-sig") as f:
-        return _json.load(f)
+	if not _os.path.exists(path):
+		if on_missing:
+			on_missing()
+			return
+		raise FileNotFoundError(f"Save file '{path}' does not exist.")
+	with open(path, "r", encoding="utf-8-sig") as f:
+		return _json.load(f)
 
 colors = {
 	"RED": "\033[1;31m",
