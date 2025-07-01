@@ -22,18 +22,11 @@ class KeyHandler:
         self._running = False
 
     def register(self, key, callback):
-        """Register a callback for a key (char or curses constant)."""
+        """Register a callback for a key (character or keycodes constant)."""
         self.callbacks[key] = callback
 
-    def set_loop(self, callback):
-        """Set a function to call every frame (optional)."""
-        self._on_loop = callback
-
-    def get_last_key(self):
-        return self._last_key
-
     def run_loop(self):
-        """Start the curses loop."""
+        """Start the keyhandler loop."""
         curses.wrapper(self._main)
 
     def _main(self, stdscr):
@@ -56,10 +49,8 @@ class KeyHandler:
 
             self._last_key = key
 
-            # Handle special keys
             if key in self.callbacks:
                 self.callbacks[key]()
-            # Handle regular characters
             elif 0 <= key <= 255:
                 char = chr(key)
                 if char in self.callbacks:
