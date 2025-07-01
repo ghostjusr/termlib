@@ -18,11 +18,11 @@ ANSI_COLORS = {
 }
 
 class Terminal:
-	def __init__(self, cols=120, rows=30):
+	def __init__(self, cols=120, rows=30, title="Command Prompt"):
 		self.columns = cols
 		self.rows = rows
 		self.set_size(self.columns, self.rows)
-		self.set_title()
+		self.set_title(title)
 
 	def set_size(self, cols, rows):
 		self.columns = cols
