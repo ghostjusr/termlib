@@ -1,6 +1,5 @@
 import os as _os
 import json as _json
-import ctypes as _ctypes
 
 COLOR_CODES = {
     "BLACK": "0", "BLUE": "1", "GREEN": "2", "AQUA": "3",
@@ -26,6 +25,8 @@ class Terminal:
 		self.set_title()
 
 	def set_size(self, cols, rows):
+		self.columns = cols
+		self.rows = rows
 		_os.system(
 			f'powershell -Command "$size = New-Object System.Management.Automation.Host.Size {cols},{rows}; '
 			f'$Host.UI.RawUI.BufferSize = $size; '
