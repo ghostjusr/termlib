@@ -11,7 +11,7 @@ Features:
 - Provides a clean abstraction for integrating keypress detection into terminal games
 """
 
-import curses
+import curses as _curses
 
 class KeyHandler:
     def __init__(self):
@@ -27,7 +27,7 @@ class KeyHandler:
 
     def run_loop(self):
         """Start the keyhandler loop."""
-        curses.wrapper(self._main)
+        _curses.wrapper(self._main)
 
     def _main(self, stdscr):
         self._stdscr = stdscr

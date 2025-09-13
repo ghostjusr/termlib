@@ -1,3 +1,4 @@
 from common import *
-import keyhandler
-import keycodes
+from . import keyhandler, keycodes
+
+__all__ = ["keyhandler", "keycodes"]
